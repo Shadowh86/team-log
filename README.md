@@ -40,11 +40,11 @@ Plus one skill:
 ```markdown
 # Team log
 
-## 2026-10-06 11:40 - Tomislav
+## 06-10-2026 11:40 - Tomislav
 - STARTED: login screen
 - DECISION: Firebase Auth instead of custom auth (less to maintain)
 
-## 2026-10-06 14:05 - Marko
+## 06-10-2026 14:05 - Marko
 - DONE: user database schema
 - NOTE: don't rename `userId`, it's used in 3 services
 ```

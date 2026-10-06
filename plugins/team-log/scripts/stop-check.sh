@@ -26,7 +26,7 @@ if [ "$(log_fingerprint)" != "$(cat "$B.log" 2>/dev/null)" ]; then
 fi
 
 AUTHOR="$(author_name)"
-NOW="$(date '+%Y-%m-%d %H:%M')"
+NOW="$(date '+%d-%m-%Y %H:%M')"
 cat >&2 <<EOF
 [team-log] You changed files in this repository during this session but did not
 update TEAM_LOG.md. Append an entry at the BOTTOM of TEAM_LOG.md describing only

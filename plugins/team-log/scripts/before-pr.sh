@@ -27,7 +27,7 @@ if git -C "$ROOT" diff --name-only "$MB" HEAD -- "$LOG_FILE" | grep -q .; then
 fi
 
 AUTHOR="$(author_name)"
-NOW="$(date '+%Y-%m-%d %H:%M')"
+NOW="$(date '+%d-%m-%Y %H:%M')"
 cat >&2 <<EOF
 [team-log] This branch has no committed TEAM_LOG.md update, so teammates' Claude
 sessions won't know what this PR does. Before opening the PR:

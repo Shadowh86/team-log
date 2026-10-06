@@ -22,7 +22,7 @@ Rules:
 - Only APPEND to the bottom of TEAM_LOG.md. Never edit, reorder or delete existing entries.
 - Write entries yourself; the developer does not. Current developer: $AUTHOR
 - Entry format:
-    ## YYYY-MM-DD HH:MM - $AUTHOR
+    ## DD-MM-YYYY HH:MM - $AUTHOR
     - STARTED: <task>
     - DONE: <what changed, which files/areas>
     - DECISION: <architectural or design choice and why>
