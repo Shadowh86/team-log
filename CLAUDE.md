@@ -10,7 +10,11 @@ This repo is the team-log Claude Code plugin and its marketplace.
    (users only receive updates when the version changes).
 2. Check `ROADMAP.md` for items targeted at this version and tell the user
    about any that are still open before shipping.
-3. Run the tests.
+3. Add a section for the new version at the top of `CHANGELOG.md`
+   (Added / Changed / Fixed / Removed, date in DD-MM-YYYY).
+4. Run the tests.
+5. After the user pushes, remind them to create a GitHub Release
+   (tag `vX.Y.Z`) with that version's CHANGELOG section as the notes.
 
 ## Conventions
 - Log entry dates use DD-MM-YYYY.

@@ -89,6 +89,10 @@ From v0.3.0 on, team-log tells you itself when a newer version is available (che
 - The log grows forever. Every few months, ask Claude to summarize old entries at the top and move the rest into `TEAM_LOG_ARCHIVE.md`.
 - To turn it off temporarily: `/plugin` then disable `team-log`.
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for what changed in each version.
+
 ## Development
 
 Run the hook tests (needs `git` and `bash`):
