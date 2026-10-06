@@ -49,6 +49,23 @@ pr 2 "gh pr create --fill" "PR without log entry is blocked"
 printf -- '- DONE: z\n' >> TEAM_LOG.md; git commit -qam log
 pr 0 "gh  pr   create --fill" "PR with log entry passes"
 
+echo "Update check"
+U="$P/update-check.sh"; R="$P/.."; UD="$T/upd"; mkdir -p "$UD"
+upd() { CLAUDE_PLUGIN_ROOT="$R" CLAUDE_PLUGIN_DATA="$UD/$1" TEAM_LOG_UPDATE_URL="$2" bash "$U" </dev/null 2>/dev/null; }
+uchk() { out="$(upd "$1" "$2")"; r=$?
+  if [ "$r" = 0 ] && { [ "$3" = msg ] && printf '%s' "$out" | grep -q '"systemMessage"' || { [ "$3" = none ] && [ -z "$out" ]; }; }; then
+    PASS=$((PASS+1)); echo "  ok   $4"; else FAIL=$((FAIL+1)); echo "  FAIL $4 (exit $r, out: $out)"; fi; }
+LOCALV="$(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([0-9.]*\)".*/\1/p' "$R/.claude-plugin/plugin.json")"
+printf '{ "name": "team-log", "version": "99.0.0" }' > "$UD/newer.json"
+printf '{ "name": "team-log", "version": "%s" }' "$LOCALV" > "$UD/same.json"
+printf '{ "name": "team-log", "version": "0.0.1" }' > "$UD/older.json"
+uchk a "file://$UD/newer.json" msg  "newer version on GitHub shows a notice"
+uchk b "file://$UD/same.json"  none "same version stays silent"
+uchk c "file://$UD/older.json" none "older version stays silent"
+uchk d "file://$UD/missing.json" none "unreachable URL stays silent"
+uchk a "file://$UD/same.json"  msg  "cached result reused within a day (no refetch)"
+out="$(TEAM_LOG_NO_UPDATE_CHECK=1 upd e "file://$UD/newer.json")"; [ -z "$out" ] && { PASS=$((PASS+1)); echo "  ok   TEAM_LOG_NO_UPDATE_CHECK disables it"; } || { FAIL=$((FAIL+1)); echo "  FAIL disable flag"; }
+
 echo "Outside git"
 cd "$T"; echo "{$S}" | bash "$P/stop-check.sh"; [ $? = 0 ] && { PASS=$((PASS+1)); echo "  ok   no-op outside a git repo"; } || { FAIL=$((FAIL+1)); echo "  FAIL outside git"; }
 

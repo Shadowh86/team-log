@@ -26,6 +26,7 @@ Requirements: `git` and `bash`. On Windows, Git for Windows (Git Bash) is enough
 | When | Hook | What happens |
 |---|---|---|
 | Session starts | `SessionStart` | Claude gets the log rules and the last ~60 lines of `TEAM_LOG.md`, so it knows what teammates are doing. |
+| Session starts | `SessionStart` | Once a day, checks GitHub for a newer team-log version and shows you a notice if one exists. Silent when offline. |
 | Claude edits a file or runs a command | `PreToolUse` / `PostToolUse` | Records whether that tool call changed files in the repo. Only Claude's own changes count. |
 | Claude tries to finish | `Stop` | If Claude changed files but `TEAM_LOG.md` wasn't updated afterwards, Claude is blocked and asked to append an entry first. |
 | Claude runs `gh pr create` | `PreToolUse` | If the branch has no committed `TEAM_LOG.md` update, the PR is blocked until Claude adds and commits a summary entry. |
@@ -73,6 +74,8 @@ or update manually when a new version is out:
 ```
 
 Then restart Claude Code or run `/reload-plugins`.
+
+From v0.3.0 on, team-log tells you itself when a newer version is available (checked at most once a day). To turn that off, set `TEAM_LOG_NO_UPDATE_CHECK=1`.
 
 **Maintainers:** bump `version` in `plugins/team-log/.claude-plugin/plugin.json` on every release. Users only receive a new copy when the version changes.
 
