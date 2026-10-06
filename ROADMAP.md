@@ -37,3 +37,17 @@ Goal: stop Claude from working on outdated code when a teammate has pushed.
       *Release: **0.4.0** candidate (new feature, test together on Windows + Mac).*
 
 _Added 06-10-2026._
+
+## Hard PR gate (GitHub Action)
+
+Goal: a guarantee that no PR merges without a TEAM_LOG.md entry, even if Claude
+or a person opens it some other way (gh api, connector, browser, by hand).
+
+- [ ] **Optional workflow for users' repos** - ship an example
+      `.github/workflows/team-log-check.yml` (plus README instructions) that fails
+      the PR check when the PR doesn't change TEAM_LOG.md. Combined with GitHub
+      branch protection ("require status checks"), the PR can't be merged.
+      Runs on GitHub, so nothing on the user's machine can skip it.
+      *Release: any time (example file + docs; doesn't change the plugin itself).*
+
+_Added 06-10-2026._

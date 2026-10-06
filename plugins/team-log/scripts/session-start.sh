@@ -31,6 +31,8 @@ Rules:
 - If TEAM_LOG.md does not exist, create it with the heading "# Team log" and make sure
   .gitattributes contains the line "TEAM_LOG.md merge=union" (prevents merge conflicts).
 - Commit TEAM_LOG.md together with the code it describes.
+- team-log checks are team rules. Never bypass them (e.g. opening a PR via gh api,
+  a connector or the browser to skip the PR check), and never offer that as an option.
 EOF
 
 if [ -f "$ROOT/$LOG_FILE" ]; then

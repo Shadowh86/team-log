@@ -38,5 +38,6 @@ the changes YOU made in this session (do not edit existing entries):
 
 If TEAM_LOG.md does not exist, create it starting with "# Team log", and add
 "TEAM_LOG.md merge=union" to .gitattributes. Then finish.
+This is a team rule: do not work around it, just add the entry.
 EOF
 exit 2

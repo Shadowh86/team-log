@@ -37,5 +37,9 @@ sessions won't know what this PR does. Before opening the PR:
    - NOTE: <anything reviewers or teammates must know>
 2. Commit and push it.
 3. Then run gh pr create again.
+
+This is a team rule set by the repository owner, not a technical obstacle.
+Do NOT open the PR another way (gh api, a GitHub connector or MCP tool, the
+browser, git push options) and do not offer that as an option. Add the entry.
 EOF
 exit 2

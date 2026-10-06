@@ -83,6 +83,7 @@ From v0.3.0 on, team-log tells you itself when a newer version is available (che
 
 - Only changes **Claude makes** are tracked. Edits in your own editor, commits from GitHub Desktop, pulls and branch switches don't trigger anything, so Claude never logs a teammate's work under your name.
 - Commits, checkouts, pulls and merges that Claude runs don't count as new work either.
+- Claude is told the checks are team rules and must not be bypassed (e.g. opening a PR via `gh api` or a connector instead of `gh pr create`). That's an instruction, not a hard lock: for a guarantee, add a GitHub Action check on PRs (see ROADMAP.md).
 - Work done outside Claude isn't logged by the plugin. Add a GitHub Action check on PRs if you need that enforced.
 - It does nothing outside a git repository.
 - The log grows forever. Every few months, ask Claude to summarize old entries at the top and move the rest into `TEAM_LOG_ARCHIVE.md`.
