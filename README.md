@@ -60,6 +60,22 @@ TEAM_LOG.md merge=union
 
 With it, git keeps both sides automatically.
 
+## Updating
+
+Auto-update is off by default for this marketplace. Either turn it on once:
+
+- `/plugin` → **Marketplaces** → `shadowh86-plugins` → **Enable auto-update**
+
+or update manually when a new version is out:
+
+```
+/plugin marketplace update shadowh86-plugins
+```
+
+Then restart Claude Code or run `/reload-plugins`.
+
+**Maintainers:** bump `version` in `plugins/team-log/.claude-plugin/plugin.json` on every release. Users only receive a new copy when the version changes.
+
 ## Notes
 
 - Only changes **Claude makes** are tracked. Edits in your own editor, commits from GitHub Desktop, pulls and branch switches don't trigger anything, so Claude never logs a teammate's work under your name.
