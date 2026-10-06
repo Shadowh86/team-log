@@ -73,6 +73,27 @@ _Added 06-10-2026._
       Claude reads at session start, PR gate on/off, author name override.
       *Release: 0.5.0 candidate.*
 
+## Manual changes (git hooks)
+
+Goal: catch code that a developer changed by hand (editor, GitHub Desktop)
+and pushes without a TEAM_LOG.md entry.
+
+- [ ] **pre-push git hook, installed by the plugin** - before any push (terminal,
+      GitHub Desktop, IDE), check that the commits being pushed include a
+      TEAM_LOG.md change when they change code. Claude's work passes
+      automatically because Claude already logged it.
+      Decisions: the **plugin installs the hook itself** (no manual setup per
+      developer), and it runs on **pre-push** (not pre-commit), so developers
+      can commit freely and log before pushing.
+      Open questions to settle before building:
+      - warn only, or block the push? (bypass is always possible with
+        `git push --no-verify`; the GitHub Action is the real guarantee)
+      - don't break existing hooks: install into `.git/hooks/pre-push` only
+        if none exists, or chain to the existing one; avoid overriding
+        `core.hooksPath` (Husky etc.)
+      - tell the user once that the hook was installed, and how to remove it
+      *Release: 0.4.0 candidate (test together on Windows + Mac, incl. GitHub Desktop).*
+
 ## Visibility
 
 - [ ] **Demo GIF in README + submit to Anthropic's community marketplace** -
