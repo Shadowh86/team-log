@@ -51,3 +51,32 @@ or a person opens it some other way (gh api, connector, browser, by hand).
       *Release: any time (example file + docs; doesn't change the plugin itself).*
 
 _Added 06-10-2026._
+
+## Quality and maintenance
+
+- [ ] **CI on Windows, Mac and Linux** - GitHub Action that runs
+      `bash tests/test-hooks.sh` on ubuntu, macos and windows runners on every
+      push and PR. Would have caught the macOS grep bug before release.
+      *Release: any time (repo-only, no version bump needed). Do this first.*
+- [ ] **Speed check on big repos** - the tracking hook runs `git status` before
+      and after every Claude edit. Measure the delay on a large real project
+      (e.g. a Unity repo) and optimize if it's noticeable.
+      *Release: next patch if a fix is needed.*
+
+## Features
+
+- [ ] **`/team-log:archive` skill** - summarize entries older than N months into
+      a short summary at the top of `TEAM_LOG.md` and move the full old entries
+      to `TEAM_LOG_ARCHIVE.md`.
+      *Release: 0.4.0 or later.*
+- [ ] **Settings via plugin config (`userConfig`)** - e.g. how many log lines
+      Claude reads at session start, PR gate on/off, author name override.
+      *Release: 0.5.0 candidate.*
+
+## Visibility
+
+- [ ] **Demo GIF in README + submit to Anthropic's community marketplace** -
+      so people can find and understand the plugin quickly.
+      *Release: any time, ideally after CI is in place.*
+
+_Added 06-10-2026._
