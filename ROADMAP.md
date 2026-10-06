@@ -114,6 +114,35 @@ and pushes without a TEAM_LOG.md entry.
 - [ ] **Test web-interface merges** - see the ⚠ warning at the top.
       *Release: before 0.4.0.*
 
+## Changes outside the repo (databases, webhooks, config)
+
+team-log only sees files in git. Changes made directly to outside systems
+leave no trace, so teammates' Claude never learns about them.
+
+- [ ] **Log changes to outside systems** - treat commands and tools that change
+      external state as work that needs a log entry: e.g. `dotnet ef database
+      update`, `sqlcmd`, `psql`, `mysql`, database/cloud connector (MCP) tools,
+      CLI calls that edit webhooks or cloud config. Configurable list.
+      *Release: 0.5.0 candidate.*
+- [ ] **Docs: keep schema changes as migrations in the repo** (e.g. EF Core
+      migrations) so they are files and get logged automatically.
+      *Release: any time (README).*
+
+## Robustness
+
+- [ ] **Never put secrets in the log** - session rule: no connection strings,
+      API keys, passwords or tokens in TEAM_LOG.md (it's committed and shared).
+      *Release: next patch (small).*
+- [ ] **Build output must not count as work** - if `bin/`, `obj/`, `dist/`,
+      `node_modules/` etc. aren't gitignored, every build Claude runs looks like
+      a code change and triggers a log request. Ignore common build-output
+      paths in the tracking hook, or at least warn about a missing .gitignore.
+      *Release: next patch (small).*
+- [ ] **Per-area logs for big teams** - optional `TEAM_LOG.md` per folder or
+      service (e.g. `api/TEAM_LOG.md`, `web/TEAM_LOG.md`), so one log for 20
+      people doesn't grow out of control. Claude logs to the nearest one.
+      *Release: 0.5.0 or later.*
+
 ## Visibility
 
 - [ ] **Demo GIF in README + submit to Anthropic's community marketplace** -
