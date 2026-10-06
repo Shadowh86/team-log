@@ -5,7 +5,7 @@ source "$(dirname "$0")/common.sh"
 read_input
 
 # Only react to PR creation.
-printf '%s' "$HOOK_INPUT" | grep -q 'gh[[:space:]]\+pr[[:space:]]\+create' || exit 0
+printf '%s' "$HOOK_INPUT" | grep -Eq 'gh[[:space:]]+pr[[:space:]]+create' || exit 0
 in_git_repo || exit 0
 
 ROOT="$(repo_root)"
