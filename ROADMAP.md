@@ -3,6 +3,13 @@
 Planned work that isn't done yet. Each item says which release it belongs to.
 Before shipping a release, check this file for items targeted at that version.
 
+> **⚠ Needs testing: `merge=union` on web merges.** It works for local merges
+> and pulls, but GitHub/GitLab may ignore `.gitattributes` when a PR is merged
+> in the web interface and report a conflict on TEAM_LOG.md anyway.
+> Test: two branches that both append to TEAM_LOG.md, open a PR for each, merge
+> both on GitHub. If the second one conflicts, document it and decide on a fix
+> (e.g. one log file per entry, or a GitHub Action that resolves it).
+
 ## Bug reporting
 
 Goal: make it easy for users to report bugs, and make every report complete
@@ -93,6 +100,19 @@ and pushes without a TEAM_LOG.md entry.
         `core.hooksPath` (Husky etc.)
       - tell the user once that the hook was installed, and how to remove it
       *Release: 0.4.0 candidate (test together on Windows + Mac, incl. GitHub Desktop).*
+
+## Other git hosts and branch names
+
+- [ ] **GitLab / Bitbucket PR support** - the PR check only catches
+      `gh pr create` (GitHub CLI). Also catch `glab mr create` (GitLab) and
+      other common PR/MR commands.
+      *Release: 0.5.0 candidate.*
+- [ ] **Detect the real default branch** - the PR check compares against
+      `main` or `master` only; repos using `develop`, `trunk` etc. are silently
+      skipped. Read the default branch from `origin/HEAD` or the host instead.
+      *Release: next patch.*
+- [ ] **Test web-interface merges** - see the ⚠ warning at the top.
+      *Release: before 0.4.0.*
 
 ## Visibility
 
