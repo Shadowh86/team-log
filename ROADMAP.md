@@ -22,3 +22,18 @@ enough to reproduce.
       *Release: **0.4.0** (new feature, test together on Windows + Mac).*
 
 _Added 06-10-2026._
+
+## Stale branch warning
+
+Goal: stop Claude from working on outdated code when a teammate has pushed.
+
+- [ ] **Behind-remote check at session start** - run a quick `git fetch`
+      (short timeout, silent when offline) and warn when:
+      - the current branch is behind its GitHub branch
+        (e.g. "Shadowh86 pushed 2 commits to main - pull first"), or
+      - TEAM_LOG.md on GitHub has entries that aren't local yet.
+      The warning goes to both the user (systemMessage) and Claude (context),
+      so Claude knows not to edit stale files.
+      *Release: **0.4.0** candidate (new feature, test together on Windows + Mac).*
+
+_Added 06-10-2026._
