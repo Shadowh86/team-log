@@ -1,12 +1,12 @@
 #!/bin/bash
 # SessionStart: give Claude the team-log rules and the latest entries,
-# and record a baseline so the Stop hook only reacts to work done in this session.
+# and reset the session state so only work Claude does in this session is tracked.
 source "$(dirname "$0")/common.sh"
 read_input
 
 in_git_repo || exit 0
 
-save_state
+mark_clean
 
 ROOT="$(repo_root)"
 AUTHOR="$(author_name)"

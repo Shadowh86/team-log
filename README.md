@@ -26,7 +26,8 @@ Requirements: `git` and `bash`. On Windows, Git for Windows (Git Bash) is enough
 | When | Hook | What happens |
 |---|---|---|
 | Session starts | `SessionStart` | Claude gets the log rules and the last ~60 lines of `TEAM_LOG.md`, so it knows what teammates are doing. |
-| Claude tries to finish | `Stop` | If files changed during this turn but `TEAM_LOG.md` didn't, Claude is blocked and asked to append an entry first. |
+| Claude edits a file or runs a command | `PreToolUse` / `PostToolUse` | Records whether that tool call changed files in the repo. Only Claude's own changes count. |
+| Claude tries to finish | `Stop` | If Claude changed files but `TEAM_LOG.md` wasn't updated afterwards, Claude is blocked and asked to append an entry first. |
 | Claude runs `gh pr create` | `PreToolUse` | If the branch has no committed `TEAM_LOG.md` update, the PR is blocked until Claude adds and commits a summary entry. |
 
 Plus one skill:
@@ -61,10 +62,20 @@ With it, git keeps both sides automatically.
 
 ## Notes
 
-- The `Stop` check only reacts to changes made **during the session**, not to edits you already had uncommitted before starting.
+- Only changes **Claude makes** are tracked. Edits in your own editor, commits from GitHub Desktop, pulls and branch switches don't trigger anything, so Claude never logs a teammate's work under your name.
+- Commits, checkouts, pulls and merges that Claude runs don't count as new work either.
+- Work done outside Claude isn't logged by the plugin. Add a GitHub Action check on PRs if you need that enforced.
 - It does nothing outside a git repository.
 - The log grows forever. Every few months, ask Claude to summarize old entries at the top and move the rest into `TEAM_LOG_ARCHIVE.md`.
 - To turn it off temporarily: `/plugin` then disable `team-log`.
+
+## Development
+
+Run the hook tests (needs `git` and `bash`):
+
+```
+bash tests/test-hooks.sh
+```
 
 ## License
 
