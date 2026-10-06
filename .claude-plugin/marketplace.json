@@ -1,0 +1,15 @@
+{
+  "name": "shadowh86-plugins",
+  "description": "Claude Code plugins by Shadowh86",
+  "owner": {
+    "name": "Tomislav (Shadowh86)",
+    "url": "https://github.com/Shadowh86"
+  },
+  "plugins": [
+    {
+      "name": "team-log",
+      "source": "./plugins/team-log",
+      "description": "Shared, append-only TEAM_LOG.md that every developer's Claude reads at start and writes to automatically, so Claude Code sessions on the same repo stay in sync."
+    }
+  ]
+}

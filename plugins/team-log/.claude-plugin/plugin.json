@@ -1,0 +1,12 @@
+{
+  "name": "team-log",
+  "version": "0.1.0",
+  "description": "Keeps Claude Code sessions of different developers in sync through an append-only TEAM_LOG.md that Claude reads at session start and is required to update after changing code and before opening a PR.",
+  "author": {
+    "name": "Tomislav (Shadowh86)",
+    "url": "https://github.com/Shadowh86"
+  },
+  "homepage": "https://github.com/Shadowh86/team-log",
+  "license": "MIT",
+  "keywords": ["team", "collaboration", "log", "handoff", "hooks"]
+}

@@ -1,0 +1,71 @@
+# team-log
+
+A Claude Code plugin that keeps the Claude sessions of different developers on the same repository in sync.
+
+Claude Code sessions don't talk to each other. Your Claude doesn't know what your teammate's Claude did yesterday, which decisions were made, or who is already working on the login screen. **team-log** fixes that with one shared, append-only file: `TEAM_LOG.md`.
+
+- Every session **reads** the latest entries when it starts.
+- Claude **writes** the entries itself. Developers never touch the file.
+- Hooks **enforce** it, so Claude can't forget.
+
+## Install
+
+In Claude Code:
+
+```
+/plugin marketplace add Shadowh86/team-log
+/plugin install team-log@shadowh86-plugins
+```
+
+To turn it on for everyone working in a repo, install it with **project scope**. That records it in the repo's `.claude/settings.json`; commit that file and teammates are prompted to install it.
+
+Requirements: `git` and `bash`. On Windows, Git for Windows (Git Bash) is enough.
+
+## What it does
+
+| When | Hook | What happens |
+|---|---|---|
+| Session starts | `SessionStart` | Claude gets the log rules and the last ~60 lines of `TEAM_LOG.md`, so it knows what teammates are doing. |
+| Claude tries to finish | `Stop` | If files changed during this turn but `TEAM_LOG.md` didn't, Claude is blocked and asked to append an entry first. |
+| Claude runs `gh pr create` | `PreToolUse` | If the branch has no committed `TEAM_LOG.md` update, the PR is blocked until Claude adds and commits a summary entry. |
+
+Plus one skill:
+
+- `/team-log:catch-up` - summary of recent work: in progress, done, decisions, warnings.
+
+## The log format
+
+```markdown
+# Team log
+
+## 2026-10-06 11:40 - Tomislav
+- STARTED: login screen
+- DECISION: Firebase Auth instead of custom auth (less to maintain)
+
+## 2026-10-06 14:05 - Marko
+- DONE: user database schema
+- NOTE: don't rename `userId`, it's used in 3 services
+```
+
+Entry types: `STARTED`, `DONE`, `DECISION`, `NOTE`. The author name comes from `git config user.name`.
+
+## No merge conflicts
+
+When two developers append to the end of the same file, git normally reports a conflict. On first use Claude adds this line to `.gitattributes`:
+
+```
+TEAM_LOG.md merge=union
+```
+
+With it, git keeps both sides automatically.
+
+## Notes
+
+- The `Stop` check only reacts to changes made **during the session**, not to edits you already had uncommitted before starting.
+- It does nothing outside a git repository.
+- The log grows forever. Every few months, ask Claude to summarize old entries at the top and move the rest into `TEAM_LOG_ARCHIVE.md`.
+- To turn it off temporarily: `/plugin` then disable `team-log`.
+
+## License
+
+MIT
