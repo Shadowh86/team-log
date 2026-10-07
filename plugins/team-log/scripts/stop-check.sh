@@ -19,8 +19,20 @@ if printf '%s' "$HOOK_INPUT" | grep -Eq '"stop_hook_active"[[:space:]]*:[[:space
   exit 0
 fi
 
-# Log was updated after the changes: all good.
+# Log was updated after the changes: check the new lines, then done.
 if [ "$(log_fingerprint)" != "$(cat "$B.log" 2>/dev/null)" ]; then
+  OLD_LINES="$(cat "$B.loglines" 2>/dev/null)"
+  case "$OLD_LINES" in ''|*[!0-9]*) OLD_LINES=0 ;; esac
+  BAD="$(tail -n +"$((OLD_LINES + 1))" "$(repo_root)/$LOG_FILE" 2>/dev/null | grep -E "$PLACEHOLDER_RE")"
+  if [ -n "$BAD" ]; then
+    cat >&2 <<EOF
+[team-log] The entry you just added still contains template placeholders:
+$BAD
+Replace each <...> with the real content (editing your own new entry from this
+session is allowed). Be specific: what changed and where.
+EOF
+    exit 2
+  fi
   mark_clean
   exit 0
 fi

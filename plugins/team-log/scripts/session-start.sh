@@ -27,7 +27,11 @@ Rules:
     - DONE: <what changed, which files/areas>
     - DECISION: <architectural or design choice and why>
     - NOTE: <warning or info for teammates>
-- Keep entries short: one line per item, no code.
+- Keep entries short: one line per item, no code. Be specific:
+    bad:  - DONE: updated files
+    good: - DONE: login form validates email format (src/auth/LoginForm.cs)
+- Never write secrets in TEAM_LOG.md (passwords, API keys, tokens, connection
+  strings). It is committed and shared. Write "see .env" or similar instead.
 - If TEAM_LOG.md does not exist, create it with the heading "# Team log" and make sure
   .gitattributes contains the line "TEAM_LOG.md merge=union" (prevents merge conflicts).
 - Commit TEAM_LOG.md together with the code it describes.

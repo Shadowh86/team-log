@@ -10,9 +10,11 @@ in_git_repo || exit 0
 
 ROOT="$(repo_root)"
 
-# Find the base branch to compare against.
+# Find the base branch to compare against: the remote's default branch
+# (origin/HEAD) if known, otherwise common default-branch names.
 BASE=""
-for ref in origin/HEAD origin/main origin/master main master; do
+for ref in origin/HEAD origin/main origin/master origin/develop origin/trunk \
+           main master develop trunk; do
   if git -C "$ROOT" rev-parse --verify --quiet "$ref" >/dev/null; then
     BASE="$ref"; break
   fi
@@ -23,6 +25,15 @@ MB="$(git -C "$ROOT" merge-base HEAD "$BASE" 2>/dev/null)"
 [ -z "$MB" ] && exit 0
 
 if git -C "$ROOT" diff --name-only "$MB" HEAD -- "$LOG_FILE" | grep -q .; then
+  BAD="$(git -C "$ROOT" diff "$MB" HEAD -- "$LOG_FILE" | grep '^+' | grep -E "$PLACEHOLDER_RE")"
+  if [ -n "$BAD" ]; then
+    cat >&2 <<EOF
+[team-log] The TEAM_LOG.md entry on this branch still contains template placeholders:
+$BAD
+Replace each <...> with the real content, commit, and then open the PR.
+EOF
+    exit 2
+  fi
   exit 0
 fi
 

@@ -109,10 +109,9 @@ and pushes without a TEAM_LOG.md entry.
       `gh pr create` (GitHub CLI). Also catch `glab mr create` (GitLab) and
       other common PR/MR commands.
       *Release: 0.5.0 candidate.*
-- [ ] **Detect the real default branch** - the PR check compares against
-      `main` or `master` only; repos using `develop`, `trunk` etc. are silently
-      skipped. Read the default branch from `origin/HEAD` or the host instead.
-      *Release: next patch.*
+- [x] **Detect the real default branch** - partly done in 0.3.3 (07-10-2026): uses
+      origin/HEAD, else main/master/develop/trunk. Still open: asking the host when
+      origin/HEAD is missing and the branch has another name.
 - [ ] **Test web-interface merges** - see the ⚠ warning at the top.
       *Release: before 0.4.0.*
 
@@ -132,14 +131,8 @@ leave no trace, so teammates' Claude never learns about them.
 
 ## Robustness
 
-- [ ] **Never put secrets in the log** - session rule: no connection strings,
-      API keys, passwords or tokens in TEAM_LOG.md (it's committed and shared).
-      *Release: next patch (small).*
-- [ ] **Build output must not count as work** - if `bin/`, `obj/`, `dist/`,
-      `node_modules/` etc. aren't gitignored, every build Claude runs looks like
-      a code change and triggers a log request. Ignore common build-output
-      paths in the tracking hook, or at least warn about a missing .gitignore.
-      *Release: next patch (small).*
+- [x] **Never put secrets in the log** - done in 0.3.3 (07-10-2026).
+- [x] **Build output must not count as work** - done in 0.3.3 (07-10-2026).
 - [ ] **Per-area logs for big teams** - optional `TEAM_LOG.md` per folder or
       service (e.g. `api/TEAM_LOG.md`, `web/TEAM_LOG.md`), so one log for 20
       people doesn't grow out of control. Claude logs to the nearest one.
@@ -149,14 +142,8 @@ leave no trace, so teammates' Claude never learns about them.
 
 - [x] **Prompt-injection guard** - done in 0.3.3 (07-10-2026).
       Follow-up idea: also flag suspicious entries in PR review (GitHub Action).
-- [ ] **Reject template placeholders** - the Stop check fails if a new entry
-      still contains `<...>` placeholders copied from the block message
-      (e.g. `<what you changed and where>`).
-      *Release: 0.3.3.*
-- [ ] **Better entries** - add a short good/bad example to the session rules
-      ("DONE: updated files" vs. "DONE: login form validates email format
-      (src/auth/LoginForm.cs)"). Guidance only, not enforced.
-      *Release: 0.3.3.*
+- [x] **Reject template placeholders** - done in 0.3.3 (07-10-2026).
+- [x] **Better entries** - done in 0.3.3 (07-10-2026).
 - [ ] **Other AI tools** - add a line to `AGENTS.md` (read by Cursor, Copilot,
       Codex and others) telling them to read TEAM_LOG.md before working, so
       teammates who don't use Claude still benefit.

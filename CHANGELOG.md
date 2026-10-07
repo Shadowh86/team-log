@@ -15,6 +15,22 @@ Categories: **Added**, **Changed**, **Fixed**, **Removed**. Dates are DD-MM-YYYY
   - Control characters (incl. terminal escape codes) are stripped and lines are
     capped at 300 characters.
   - `/team-log:catch-up` follows the same rule.
+- Claude is told never to write secrets (passwords, API keys, tokens,
+  connection strings) into TEAM_LOG.md, since it's committed and shared.
+
+### Added
+- Entries that still contain template placeholders copied from team-log's own
+  messages (e.g. `<what you changed and where>`) are rejected, both at the end
+  of a turn and before a PR. Old entries by others don't block you.
+- Good/bad entry example in the session rules, for more specific entries.
+
+### Fixed
+- Building the project no longer triggers a log request when build output isn't
+  gitignored: new untracked files in `bin/`, `obj/`, `dist/`, `build/`, `out/`,
+  `target/`, `node_modules/`, `.vs/`, `.gradle/`, `__pycache__/` and Unity's
+  `Library/`, `Temp/`, `Logs/` are ignored. Edits to tracked files there still count.
+- PR check now also finds `develop` and `trunk` as the base branch, not only
+  `main` and `master` (when the remote's default branch isn't known locally).
 
 ## [0.3.2] - 06-10-2026
 
