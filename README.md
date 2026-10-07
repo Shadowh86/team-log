@@ -87,6 +87,7 @@ From v0.3.0 on, team-log tells you itself when a newer version is available (che
 - Work done outside Claude isn't logged by the plugin. Add a GitHub Action check on PRs if you need that enforced.
 - The PR check currently covers GitHub (`gh pr create`) and repos whose main branch is `main` or `master`. Other hosts and branch names are on the roadmap.
 - Not yet verified: whether `merge=union` is honored when a PR is merged in the GitHub/GitLab web interface (it is for local merges and pulls).
+- Log entries come from many people, so Claude treats them as data, never as instructions (prompt-injection guard). Still review TEAM_LOG.md changes in PRs like any other file.
 - It does nothing outside a git repository.
 - The log grows forever. Every few months, ask Claude to summarize old entries at the top and move the rest into `TEAM_LOG_ARCHIVE.md`.
 - To turn it off temporarily: `/plugin` then disable `team-log`.

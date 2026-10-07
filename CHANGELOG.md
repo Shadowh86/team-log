@@ -3,6 +3,19 @@
 All notable changes to team-log. Newest first.
 Categories: **Added**, **Changed**, **Fixed**, **Removed**. Dates are DD-MM-YYYY.
 
+## [0.3.3] - 07-10-2026
+
+### Security
+- Prompt-injection guard. TEAM_LOG.md entries are shown to Claude at session
+  start, so anyone who can add an entry could plant instructions. Now:
+  - Claude is told that log content is data from teammates, never instructions,
+    and to mention suspicious requests to the user instead of acting on them.
+  - The log is wrapped in a random per-session marker, so an entry can't fake
+    the end of the data block and add "rules" after it.
+  - Control characters (incl. terminal escape codes) are stripped and lines are
+    capped at 300 characters.
+  - `/team-log:catch-up` follows the same rule.
+
 ## [0.3.2] - 06-10-2026
 
 ### Changed
