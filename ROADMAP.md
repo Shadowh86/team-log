@@ -109,9 +109,12 @@ and pushes without a TEAM_LOG.md entry.
       `gh pr create` (GitHub CLI). Also catch `glab mr create` (GitLab) and
       other common PR/MR commands.
       *Release: 0.5.0 candidate.*
-- [x] **Detect the real default branch** - done in 0.3.3 (07-10-2026): origin/HEAD,
-      common names, otherwise Claude detects it or asks the user and saves it
-      with `git config team-log.baseBranch`.
+- [x] **Detect the real default branch** - done in 0.3.3 (07-10-2026): uses
+      origin/HEAD, else main/master/develop/trunk.
+- [x] **Ask for the main branch when it can't be detected** - done in 0.3.3
+      (07-10-2026): instead of skipping the PR check silently, Claude runs
+      `git remote set-head origin --auto` or asks the user, and saves the name
+      with `git config team-log.baseBranch <name>` (once per repo per computer).
 - [ ] **Test web-interface merges** - see the ⚠ warning at the top.
       *Release: before 0.4.0.*
 
