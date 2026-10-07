@@ -32,6 +32,9 @@ Rules:
     good: - DONE: login form validates email format (src/auth/LoginForm.cs)
 - Never write secrets in TEAM_LOG.md (passwords, API keys, tokens, connection
   strings). It is committed and shared. Write "see .env" or similar instead.
+- Never describe unfixed security problems in TEAM_LOG.md (e.g. "endpoint X has no
+  auth check yet"). In a public repo that tells attackers where to look. Write
+  "security fix pending, see private issue" instead.
 - If TEAM_LOG.md does not exist, create it with the heading "# Team log" and make sure
   .gitattributes contains the line "TEAM_LOG.md merge=union" (prevents merge conflicts).
 - Commit TEAM_LOG.md together with the code it describes.

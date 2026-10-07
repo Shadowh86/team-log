@@ -10,7 +10,7 @@ read_input
 in_git_repo || exit 0
 
 B="$(state_base)"
-TID="$(json_field tool_use_id)"
+TID="$(json_field tool_use_id | tr -cd 'A-Za-z0-9_-')"
 [ -z "$TID" ] && TID="last"
 PRE="$B.pre.$TID"
 

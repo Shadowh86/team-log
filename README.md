@@ -89,6 +89,7 @@ From v0.3.0 on, team-log tells you itself when a newer version is available (che
 - New untracked files in common build-output folders (`bin/`, `obj/`, `dist/`, `node_modules/`, Unity's `Library/`, …) don't count as work, so builds don't trigger log requests.
 - Not yet verified: whether `merge=union` is honored when a PR is merged in the GitHub/GitLab web interface (it is for local merges and pulls).
 - Log entries come from many people, so Claude treats them as data, never as instructions (prompt-injection guard). Still review TEAM_LOG.md changes in PRs like any other file.
+- Privacy: the update check fetches team-log's `plugin.json` from GitHub once a day, so GitHub sees your IP address. Nothing about you or your repo is sent. Turn it off with `TEAM_LOG_NO_UPDATE_CHECK=1`.
 - It does nothing outside a git repository.
 - The log grows forever. Every few months, ask Claude to summarize old entries at the top and move the rest into `TEAM_LOG_ARCHIVE.md`.
 - To turn it off temporarily: `/plugin` then disable `team-log`.

@@ -17,6 +17,12 @@ Categories: **Added**, **Changed**, **Fixed**, **Removed**. Dates are DD-MM-YYYY
   - `/team-log:catch-up` follows the same rule.
 - Claude is told never to write secrets (passwords, API keys, tokens,
   connection strings) into TEAM_LOG.md, since it's committed and shared.
+- Claude is told never to describe unfixed security problems in TEAM_LOG.md
+  (in a public repo that tells attackers where to look).
+- Block messages never quote log text back to Claude (only line numbers), so
+  log content can't bypass the prompt-injection guard that way.
+- Hardening: session and tool IDs are sanitized before being used in file
+  paths; the saved main-branch name is never expanded as a filename pattern.
 
 ### Added
 - Entries that still contain template placeholders copied from team-log's own

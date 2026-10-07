@@ -77,7 +77,7 @@ log_fingerprint() {
 state_base() {
   local dir="${CLAUDE_PLUGIN_DATA:-${TMPDIR:-/tmp}/team-log}/state"
   mkdir -p "$dir" 2>/dev/null
-  local sid; sid="$(json_field session_id)"
+  local sid; sid="$(json_field session_id | tr -cd 'A-Za-z0-9_-')"
   [ -z "$sid" ] && sid="default"
   echo "$dir/$sid"
 }

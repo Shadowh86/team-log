@@ -23,11 +23,15 @@ fi
 if [ "$(log_fingerprint)" != "$(cat "$B.log" 2>/dev/null)" ]; then
   OLD_LINES="$(cat "$B.loglines" 2>/dev/null)"
   case "$OLD_LINES" in ''|*[!0-9]*) OLD_LINES=0 ;; esac
-  BAD="$(tail -n +"$((OLD_LINES + 1))" "$(repo_root)/$LOG_FILE" 2>/dev/null | grep -E "$PLACEHOLDER_RE")"
+  # Only line numbers are reported, never the log text itself: log content
+  # must not reach Claude outside the guarded data block (prompt injection).
+  BAD="$(awk -v start="$((OLD_LINES + 1))" -v re="$PLACEHOLDER_RE" \
+          'NR >= start && $0 ~ re { printf "%s%d", (n++ ? ", " : ""), NR }' \
+          "$(repo_root)/$LOG_FILE" 2>/dev/null)"
   if [ -n "$BAD" ]; then
     cat >&2 <<EOF
-[team-log] The entry you just added still contains template placeholders:
-$BAD
+[team-log] The entry you just added to TEAM_LOG.md still contains template
+placeholders like <what you changed and where> (line $BAD).
 Replace each <...> with the real content (editing your own new entry from this
 session is allowed). Be specific: what changed and where.
 EOF

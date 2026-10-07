@@ -18,11 +18,13 @@ BASE=""
 CONFIGURED="$(git -C "$ROOT" config --get team-log.baseBranch 2>/dev/null)"
 CANDIDATES="origin/HEAD origin/main origin/master origin/develop origin/trunk main master develop trunk"
 [ -n "$CONFIGURED" ] && CANDIDATES="origin/$CONFIGURED $CONFIGURED"
+set -f   # no filename globbing: a saved name like "*" must stay literal
 for ref in $CANDIDATES; do
   if git -C "$ROOT" rev-parse --verify --quiet "$ref" >/dev/null; then
     BASE="$ref"; break
   fi
 done
+set +f
 
 if [ -z "$BASE" ]; then
   if [ -n "$CONFIGURED" ]; then
@@ -44,11 +46,13 @@ MB="$(git -C "$ROOT" merge-base HEAD "$BASE" 2>/dev/null)"
 [ -z "$MB" ] && exit 0
 
 if git -C "$ROOT" diff --name-only "$MB" HEAD -- "$LOG_FILE" | grep -q .; then
-  BAD="$(git -C "$ROOT" diff "$MB" HEAD -- "$LOG_FILE" | grep '^+' | grep -E "$PLACEHOLDER_RE")"
-  if [ -n "$BAD" ]; then
+  # Count placeholder lines added on this branch; never echo the log text.
+  BAD="$(git -C "$ROOT" diff "$MB" HEAD -- "$LOG_FILE" \
+          | grep '^+' | grep -v '^+++' | grep -cE "$PLACEHOLDER_RE")"
+  if [ "${BAD:-0}" -gt 0 ]; then
     cat >&2 <<EOF
-[team-log] The TEAM_LOG.md entry on this branch still contains template placeholders:
-$BAD
+[team-log] $BAD line(s) of the TEAM_LOG.md entry added on this branch still contain
+template placeholders like <what you changed and where>.
 Replace each <...> with the real content, commit, and then open the PR.
 EOF
     exit 2

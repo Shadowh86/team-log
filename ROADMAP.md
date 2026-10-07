@@ -147,6 +147,15 @@ leave no trace, so teammates' Claude never learns about them.
       Follow-up idea: also flag suspicious entries in PR review (GitHub Action).
 - [x] **Reject template placeholders** - done in 0.3.3 (07-10-2026).
 - [x] **Better entries** - done in 0.3.3 (07-10-2026).
+- [x] **Security hardening round** - done in 0.3.3 (07-10-2026): block messages
+      no longer quote log text, no-unfixed-vulnerabilities rule, sanitized IDs
+      in file paths, no glob expansion of the saved branch name.
+- [ ] **Flag fake or edited entries** - an entry's author name is just text, and
+      old entries can be edited (append-only is a rule, not enforced by git).
+      `/team-log:catch-up` could compare entries with `git blame` and warn when
+      the name in an entry doesn't match who committed it, or when old entries
+      were changed.
+      *Release: 0.4.0 or later.*
 - [ ] **Other AI tools** - add a line to `AGENTS.md` (read by Cursor, Copilot,
       Codex and others) telling them to read TEAM_LOG.md before working, so
       teammates who don't use Claude still benefit.
