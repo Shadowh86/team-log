@@ -94,6 +94,18 @@ git init -q -b develop; git config user.name D; git config user.email d@d
 echo a > a && printf '# Team log\n' > TEAM_LOG.md && git add . && git commit -qm init
 git checkout -qb feature; echo b >> a; git commit -qam b
 pr 2 "gh pr create" "repo with 'develop' as default branch is checked (no main/master)"
+R4="$T/repo4"; mkdir -p "$R4"; cd "$R4"
+git init -q -b release; git config user.name D; git config user.email d@d
+echo a > a && printf '# Team log\n' > TEAM_LOG.md && git add . && git commit -qm init
+git checkout -qb feature; echo b >> a; git commit -qam b
+OUT="$(printf '{%s,"tool_input":{"command":"gh pr create"}}' "$S" | bash "$P/before-pr.sh" 2>&1)"; r=$?
+[ $r = 2 ] && printf '%s' "$OUT" | grep -q "ASK THE USER" && { PASS=$((PASS+1)); echo "  ok   unknown main branch: Claude is told to detect it or ask the user"; } || { FAIL=$((FAIL+1)); echo "  FAIL unknown main branch (exit $r)"; }
+git config team-log.baseBranch nope
+printf '{%s,"tool_input":{"command":"gh pr create"}}' "$S" | bash "$P/before-pr.sh" 2>&1 | grep -q "doesn't exist" && { PASS=$((PASS+1)); echo "  ok   wrong saved branch name is reported"; } || { FAIL=$((FAIL+1)); echo "  FAIL wrong saved name"; }
+git config team-log.baseBranch release
+pr 2 "gh pr create" "saved main branch is used: PR without log entry blocked"
+printf -- '- DONE: b in a\n' >> TEAM_LOG.md; git commit -qam log
+pr 0 "gh pr create" "saved main branch is used: PR with log entry passes"
 cd "$T/repo"
 S='"session_id":"s1"'
 

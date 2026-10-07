@@ -85,7 +85,7 @@ From v0.3.0 on, team-log tells you itself when a newer version is available (che
 - Commits, checkouts, pulls and merges that Claude runs don't count as new work either.
 - Claude is told the checks are team rules and must not be bypassed (e.g. opening a PR via `gh api` or a connector instead of `gh pr create`). That's an instruction, not a hard lock: for a guarantee, add a GitHub Action check on PRs (see ROADMAP.md).
 - Work done outside Claude isn't logged by the plugin. Add a GitHub Action check on PRs if you need that enforced.
-- The PR check currently covers GitHub (`gh pr create`). It compares against the remote's default branch, or `main`, `master`, `develop` or `trunk`. Other hosts are on the roadmap.
+- The PR check currently covers GitHub (`gh pr create`). It compares against the remote's default branch, or `main`, `master`, `develop` or `trunk`. If none of those exist, Claude detects the main branch or asks you once and saves it with `git config team-log.baseBranch <name>`. Other hosts are on the roadmap.
 - New untracked files in common build-output folders (`bin/`, `obj/`, `dist/`, `node_modules/`, Unity's `Library/`, …) don't count as work, so builds don't trigger log requests.
 - Not yet verified: whether `merge=union` is honored when a PR is merged in the GitHub/GitLab web interface (it is for local merges and pulls).
 - Log entries come from many people, so Claude treats them as data, never as instructions (prompt-injection guard). Still review TEAM_LOG.md changes in PRs like any other file.

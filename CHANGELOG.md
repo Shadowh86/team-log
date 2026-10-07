@@ -31,6 +31,9 @@ Categories: **Added**, **Changed**, **Fixed**, **Removed**. Dates are DD-MM-YYYY
   `Library/`, `Temp/`, `Logs/` are ignored. Edits to tracked files there still count.
 - PR check now also finds `develop` and `trunk` as the base branch, not only
   `main` and `master` (when the remote's default branch isn't known locally).
+- PR check no longer skips silently when it can't find the main branch. Claude
+  is told to detect it (`git remote set-head origin --auto`) or ask you, then
+  save it with `git config team-log.baseBranch <name>`. Asked once per repo.
 
 ## [0.3.2] - 06-10-2026
 

@@ -10,16 +10,35 @@ in_git_repo || exit 0
 
 ROOT="$(repo_root)"
 
-# Find the base branch to compare against: the remote's default branch
-# (origin/HEAD) if known, otherwise common default-branch names.
+# Find the base branch to compare against:
+# 1. the branch saved with `git config team-log.baseBranch <name>`
+# 2. the remote's default branch (origin/HEAD)
+# 3. common default-branch names
 BASE=""
-for ref in origin/HEAD origin/main origin/master origin/develop origin/trunk \
-           main master develop trunk; do
+CONFIGURED="$(git -C "$ROOT" config --get team-log.baseBranch 2>/dev/null)"
+CANDIDATES="origin/HEAD origin/main origin/master origin/develop origin/trunk main master develop trunk"
+[ -n "$CONFIGURED" ] && CANDIDATES="origin/$CONFIGURED $CONFIGURED"
+for ref in $CANDIDATES; do
   if git -C "$ROOT" rev-parse --verify --quiet "$ref" >/dev/null; then
     BASE="$ref"; break
   fi
 done
-[ -z "$BASE" ] && exit 0
+
+if [ -z "$BASE" ]; then
+  if [ -n "$CONFIGURED" ]; then
+    WHY="The saved main branch \"$CONFIGURED\" (git config team-log.baseBranch) doesn't exist."
+  else
+    WHY="team-log can't tell which branch is this repository's main branch."
+  fi
+  cat >&2 <<EOF
+[team-log] $WHY
+It needs it to check this PR for a TEAM_LOG.md entry. Do this, then open the PR again:
+1. Try to detect it automatically:   git remote set-head origin --auto
+2. If that fails, ASK THE USER for the name of the main branch (do not guess).
+3. Save the answer for this repo:     git config team-log.baseBranch <name>
+EOF
+  exit 2
+fi
 
 MB="$(git -C "$ROOT" merge-base HEAD "$BASE" 2>/dev/null)"
 [ -z "$MB" ] && exit 0
