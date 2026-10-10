@@ -3,6 +3,16 @@
 All notable changes to team-log. Newest first.
 Categories: **Added**, **Changed**, **Fixed**, **Removed**. Dates are DD-MM-YYYY.
 
+## [0.4.0] - 11-10-2026
+
+### Added
+- `/team-log:report-bug` skill: collects diagnostics (versions and setup only,
+  no names, paths or log content), asks what went wrong, shows the report, and
+  opens a GitHub issue with `gh` only after you approve. Without `gh` it links
+  to the issue form.
+- GitHub bug report form (`.github/ISSUE_TEMPLATE/bug_report.yml`).
+- "Reporting bugs" section in the README.
+
 ## [0.3.3] - 07-10-2026
 
 ### Security

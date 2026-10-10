@@ -1,0 +1,59 @@
+name: Bug report
+description: Something in team-log doesn't work as expected
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Easiest way: run `/team-log:report-bug` in Claude Code, it fills this in for you.
+        This issue is **public**: don't paste private code, TEAM_LOG.md content, names, paths or secrets.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows (Git Bash)
+        - macOS
+        - Linux
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: team-log version
+      placeholder: "e.g. 0.4.0 (see /plugin, or the diagnostics below)"
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics
+      description: Output of `/team-log:report-bug`, or run `bash <plugin folder>/scripts/diagnostics.sh`.
+      render: text
+  - type: textarea
+    id: debug
+    attributes:
+      label: Debug output (optional)
+      description: Start Claude Code with `claude --debug`, repeat the problem, paste the team-log related lines.
+      render: text

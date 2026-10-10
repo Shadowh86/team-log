@@ -5,30 +5,17 @@ Before shipping a release, check this file for items targeted at that version.
 
 > **🔒 Security: prompt-injection guard - done in 0.3.3.**
 
-> **⚠ Needs testing: `merge=union` on web merges.** It works for local merges
-> and pulls, but GitHub/GitLab may ignore `.gitattributes` when a PR is merged
-> in the web interface and report a conflict on TEAM_LOG.md anyway.
-> Test: two branches that both append to TEAM_LOG.md, open a PR for each, merge
-> both on GitHub. If the second one conflicts, document it and decide on a fix
-> (e.g. one log file per entry, or a GitHub Action that resolves it).
+> **✅ `merge=union` on web merges - tested 11-10-2026:** two PRs that both
+> appended to TEAM_LOG.md merged on github.com without conflicts.
 
 ## Bug reporting
 
 Goal: make it easy for users to report bugs, and make every report complete
 enough to reproduce.
 
-- [ ] **Bug report form** - `.github/ISSUE_TEMPLATE/bug_report.yml` with required
-      fields: OS, Claude Code version, team-log version, steps, actual vs expected
-      result, `claude --debug` output.
-      *Release: any time (repo-only, no version bump needed).*
-- [ ] **"Reporting bugs" section in README** - where to report, and to run
-      `claude --debug` first.
-      *Release: any time (repo-only, no version bump needed).*
-- [ ] **`/team-log:report-bug` skill** - Claude collects diagnostics (plugin
-      version, OS, Claude Code version, git version, TEAM_LOG.md and
-      `.gitattributes` setup), asks what went wrong, then opens the issue with
-      `gh issue create` or gives a pre-filled GitHub issue link.
-      *Release: **0.4.0** (new feature, test together on Windows + Mac).*
+- [x] **Bug report form** - done in 0.4.0 (11-10-2026).
+- [x] **"Reporting bugs" section in README** - done in 0.4.0 (11-10-2026).
+- [x] **`/team-log:report-bug` skill** - done in 0.4.0 (11-10-2026).
 
 _Added 06-10-2026._
 
@@ -43,7 +30,7 @@ Goal: stop Claude from working on outdated code when a teammate has pushed.
       - TEAM_LOG.md on GitHub has entries that aren't local yet.
       The warning goes to both the user (systemMessage) and Claude (context),
       so Claude knows not to edit stale files.
-      *Release: **0.4.0** candidate (new feature, test together on Windows + Mac).*
+      *Release: 0.4.x / 0.5.0 candidate (new feature, test together on Windows + Mac).*
 
 _Added 06-10-2026._
 
@@ -77,7 +64,7 @@ _Added 06-10-2026._
 - [ ] **`/team-log:archive` skill** - summarize entries older than N months into
       a short summary at the top of `TEAM_LOG.md` and move the full old entries
       to `TEAM_LOG_ARCHIVE.md`.
-      *Release: 0.4.0 or later.*
+      *Release: after 0.4.0.*
 - [ ] **Settings via plugin config (`userConfig`)** - e.g. how many log lines
       Claude reads at session start, PR gate on/off, author name override.
       *Release: 0.5.0 candidate.*
@@ -94,14 +81,13 @@ and pushes without a TEAM_LOG.md entry.
       Decisions: the **plugin installs the hook itself** (no manual setup per
       developer), and it runs on **pre-push** (not pre-commit), so developers
       can commit freely and log before pushing.
-      Open questions to settle before building:
-      - warn only, or block the push? (bypass is always possible with
-        `git push --no-verify`; the GitHub Action is the real guarantee)
-      - don't break existing hooks: install into `.git/hooks/pre-push` only
-        if none exists, or chain to the existing one; avoid overriding
-        `core.hooksPath` (Husky etc.)
-      - tell the user once that the hook was installed, and how to remove it
-      *Release: 0.4.0 candidate (test together on Windows + Mac, incl. GitHub Desktop).*
+      Decided 11-10-2026:
+      - **warn only**, don't block the push
+      - **never touch existing hooks**: if a pre-push hook already exists, or
+        `core.hooksPath` is set (Husky etc.), skip installing and show a
+        one-time message with manual setup steps
+      Still open: wording of the one-time "hook installed / how to remove" notice.
+      *Release: after 0.4.0 (test together on Windows + Mac, incl. GitHub Desktop).*
 
 ## Other git hosts and branch names
 
@@ -115,8 +101,7 @@ and pushes without a TEAM_LOG.md entry.
       (07-10-2026): instead of skipping the PR check silently, Claude runs
       `git remote set-head origin --auto` or asks the user, and saves the name
       with `git config team-log.baseBranch <name>` (once per repo per computer).
-- [ ] **Test web-interface merges** - see the ⚠ warning at the top.
-      *Release: before 0.4.0.*
+- [x] **Test web-interface merges** - done 11-10-2026: no conflicts on github.com.
 
 ## Changes outside the repo (databases, webhooks, config)
 
@@ -155,11 +140,11 @@ leave no trace, so teammates' Claude never learns about them.
       `/team-log:catch-up` could compare entries with `git blame` and warn when
       the name in an entry doesn't match who committed it, or when old entries
       were changed.
-      *Release: 0.4.0 or later.*
+      *Release: after 0.4.0.*
 - [ ] **Other AI tools** - add a line to `AGENTS.md` (read by Cursor, Copilot,
       Codex and others) telling them to read TEAM_LOG.md before working, so
       teammates who don't use Claude still benefit.
-      *Release: 0.4.0 candidate.*
+      *Release: after 0.4.0.*
 - [ ] **Two Claude sessions on one repo at once** - tracking may attribute one
       session's edits to the other. Rare; document as a known limitation
       first, fix only if it shows up in practice.

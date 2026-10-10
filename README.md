@@ -31,9 +31,10 @@ Requirements: `git` and `bash`. On Windows, Git for Windows (Git Bash) is enough
 | Claude tries to finish | `Stop` | If Claude changed files but `TEAM_LOG.md` wasn't updated afterwards, Claude is blocked and asked to append an entry first. |
 | Claude runs `gh pr create` | `PreToolUse` | If the branch has no committed `TEAM_LOG.md` update, the PR is blocked until Claude adds and commits a summary entry. |
 
-Plus one skill:
+Plus two skills:
 
 - `/team-log:catch-up` - summary of recent work: in progress, done, decisions, warnings.
+- `/team-log:report-bug` - collects diagnostics, asks what went wrong, and (after you approve) opens a GitHub issue.
 
 ## The log format
 
@@ -93,6 +94,16 @@ From v0.3.0 on, team-log tells you itself when a newer version is available (che
 - It does nothing outside a git repository.
 - The log grows forever. Every few months, ask Claude to summarize old entries at the top and move the rest into `TEAM_LOG_ARCHIVE.md`.
 - To turn it off temporarily: `/plugin` then disable `team-log`.
+
+## Reporting bugs
+
+In Claude Code, run `/team-log:report-bug`. Claude collects versions and setup
+(no names, paths or log content), asks what went wrong, shows you the report,
+and opens a GitHub issue only after you say yes.
+
+Or open an issue by hand: [new bug report](https://github.com/Shadowh86/team-log/issues/new?template=bug_report.yml).
+If a hook misbehaves, start Claude Code with `claude --debug`, repeat the step,
+and include the team-log lines.
 
 ## Changelog
 
